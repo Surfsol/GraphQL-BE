@@ -1,5 +1,7 @@
 const axios = require("axios");
+const AllMissions = require("./missions");
 
+console.log(AllMissions);
 const {
   GraphQLObjectType,
   GraphQLInt,
@@ -75,6 +77,14 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args) {
         return axios
           .get(`https://api.spacexdata.com/v3/launches/${args.flight_number}`)
+          .then(res => res.data);
+      }
+    },
+    missions: {
+      type: new GraphQLList(AllMissions),
+      resolve(parent, args) {
+        return axios
+          .get("https://api.spacexdata.com/v3/missions")
           .then(res => res.data);
       }
     }
